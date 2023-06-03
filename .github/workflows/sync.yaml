@@ -10,5 +10,9 @@ jobs:
     steps:
     - name: Test
       working-directory: /var/www/html
-      shell: cmd
-      run: ${{ secrets.PULL }}
+      shell: bash
+      run: |
+        # Define a Bash function to perform git pull
+        
+        cd /var/www/html
+        git pull
