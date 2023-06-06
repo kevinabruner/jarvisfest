@@ -8,10 +8,8 @@ on:
 
 jobs:
   deployment:
-    runs-on:
-      self-hosted:
-        [web-jarvisfest-dev]: dev
-        [web-jarvisfest]: main
+    runs-on: self-hosted
+
     steps:
       - name: Test
         working-directory: /var/www/html
