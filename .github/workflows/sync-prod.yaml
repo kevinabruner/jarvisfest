@@ -6,7 +6,9 @@ on:
 
 jobs:
   deployment:
-    runs-on: self-hosted
+    runs-on:
+      -self-hosted
+      [web-jarvisfest]
     steps:
     - name: Test
       working-directory: /var/www/html
