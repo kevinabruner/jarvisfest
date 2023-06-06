@@ -1,4 +1,4 @@
-name: Prod Server Workflow
+name: Dev Server Workflow
 on:
   push:
     branches:
