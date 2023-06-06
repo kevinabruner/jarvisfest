@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deployment:
+    runs-on:
+      -self-hosted
+      [web-jarvisfest]
+    steps:
+    - name: Test
+      working-directory: /var/www/html
+      shell: bash
+      run: |
+        # Define a Bash function to perform git pull
+        
+        cd /var/www/html
+        git pull
