@@ -1,20 +1,16 @@
-name: CI
-
+name: Prod Server Workflow
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  deployment:
-    runs-on:
-      -self-hosted
-      [web-jarvisfest]
+  deploy:
+    runs-on: [self-hosted, prod]
+
     steps:
-    - name: Test
-      working-directory: /var/www/html
-      shell: bash
-      run: |
-        # Define a Bash function to perform git pull
-        
-        cd /var/www/html
-        git pull
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Git Pull
+        run: git pull
