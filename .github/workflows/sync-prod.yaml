@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+      
       - name: Git Pull
-        run: git pull
+        run: cd /var/www/html && git pull
+        shell: bash
