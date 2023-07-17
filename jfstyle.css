@@ -17,9 +17,9 @@
     background-repeat: no-repeat;
 }
 body table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: center;
+	border-collapse: collapse;
+	text-align: center;
+	padding-left: 10px;
 }
 
 .navbar-nav.mr-auto .nav-item .nav-link {
@@ -71,7 +71,4 @@ body table {
 .navbar-nav.mr-auto .nav-item ul {
 	display: block;
 	position: absolute;
-}
-.navbar-nav.mr-auto .nav-item .nav-link.dropdown.dropdown-toggle.btn-secondary {
-	background-color: #F6A04D;
 }
