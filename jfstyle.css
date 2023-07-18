@@ -72,3 +72,18 @@ body table {
 	display: block;
 	position: absolute;
 }
+.row {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+events table lower {
+	text-align: center;
+	box-shadow: 0 0 5px rgba(0,0,0, .25);
+	border-collapse: collapse;
+	width: 70%;
+}
+sponsors table {
+border-collapse: collapse;
+	text-align: center;
+	padding-left: 10px;
+}
