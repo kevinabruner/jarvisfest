@@ -76,8 +76,6 @@ body table {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-
-}
 sponsors table {
 border-collapse: collapse;
 	text-align: center;
@@ -85,6 +83,5 @@ border-collapse: collapse;
 	width: 70%;
 }
 #accordion1 .card {
-	max-width: 70%;
-	margin-left: 150px;
+
 }
