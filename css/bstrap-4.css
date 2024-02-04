@@ -5,6 +5,34 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 *,
@@ -25,13 +53,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
-	background-color: #fff;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -52,13 +81,14 @@ h1, h2, h3, h4, h5, h6 {
 p {
 	margin-top: 0;
 	margin-bottom: 1rem;
-	text-align: center;
+	text-align: left;
 }
 
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;
   -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
   -webkit-text-decoration-skip-ink: none;
@@ -74,8 +104,8 @@ address {
 ol,
 ul,
 dl {
-	margin-top: 0;
-	margin-bottom: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 ol ol,
@@ -140,9 +170,8 @@ a:not([href]) {
 }
 
 a:not([href]):hover {
-	color: inherit;
-	text-decoration: none;
-	text-align: center;
+  color: inherit;
+  text-decoration: none;
 }
 
 pre,
@@ -335,9 +364,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1, .h1 {
-	font-size: 2.5rem;
-	color: #184705;
-	text-align: center;
+  font-size: 2.5rem;
 }
 
 h2, .h2 {
@@ -447,9 +474,8 @@ mark,
 }
 
 .img-fluid {
-	max-width: 100%;
-	height: auto;
-	text-align: center;
+  max-width: 100%;
+  height: auto;
 }
 
 .img-thumbnail {
@@ -4729,10 +4755,10 @@ input[type="button"].btn-block {
 }
 
 .card-body {
-	-ms-flex: 1 1 auto;
-	flex: 1 1 auto;
-	min-height: 1px;
-	padding: 1.25rem;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.25rem;
 }
 
 .card-title {
@@ -9918,8 +9944,7 @@ button.bg-dark:focus {
 }
 
 .text-center {
-	text-align: center !important;
-	color: #030303;
+  text-align: center !important;
 }
 
 @media (min-width: 576px) {
