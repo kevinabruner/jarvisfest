@@ -10,23 +10,6 @@
 	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(252,248,248,1.00) 100%);
 }
 
-
-.container .navbar.navbar-expand-lg.navbar-light.bg-light {
-    background-image: -webkit-repeating-linear-gradient(270deg,rgba(229,159,89,1.00) 0%,rgba(255,162,72,1.00) 100%), url(images/fireworks.jpg);
-    background-image: -moz-repeating-linear-gradient(270deg,rgba(229,159,89,1.00) 0%,rgba(255,162,72,1.00) 100%), url(images/fireworks.jpg);
-    background-image: -o-repeating-linear-gradient(270deg,rgba(229,159,89,1.00) 0%,rgba(255,162,72,1.00) 100%), url(images/fireworks.jpg);
-    background-image: repeating-linear-gradient(180deg,rgba(229,159,89,1.00) 0%,rgba(255,162,72,1.00) 100%), url(images/fireworks.jpg);
-    color: #FCFBFB;
-    background-repeat: no-repeat;
-}
-
-.navbar-nav.mr-auto .nav-item .nav-link {
-	color: #F4EEEE;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	margin-left: 10px;
-}
 .container #carouselExampleIndicators1 {
     background-color: #000000;
     background-image: -webkit-linear-gradient(270deg,rgba(6,6,6,1.00) 0%,rgba(3,3,3,1.00) 100%);
@@ -34,6 +17,7 @@
     background-image: -o-linear-gradient(270deg,rgba(6,6,6,1.00) 0%,rgba(3,3,3,1.00) 100%);
     background-image: linear-gradient(180deg,rgba(6,6,6,1.00) 0.00%,rgba(3,3,3,1.00) 100.00%);
 }
+
 #background-container {
 }
 .container div {
@@ -58,12 +42,6 @@
     min-height: 768px;
     border-collapse: collapse;
 }
-.navbar-nav.mr-auto .nav-item .nav-link {
-}
-.navbar-nav.mr-auto .nav-item ul {
-	display: block;
-	position: absolute;
-}
 .row {
 	margin-left: 10px;
 	margin-right: 10px;
@@ -71,4 +49,24 @@
 #accordion1 .card {
 
 
+}
+.container .navbar-header .navbar.navbar-expand-lg.navbar-light.bg-light {
+	background-image: -webkit-linear-gradient(270deg,rgba(79,189,40,1.00) 0%,rgba(79,189,40,1.00) 100%);
+	background-image: -moz-linear-gradient(270deg,rgba(79,189,40,1.00) 0%,rgba(79,189,40,1.00) 100%);
+	background-image: -o-linear-gradient(270deg,rgba(79,189,40,1.00) 0%,rgba(79,189,40,1.00) 100%);
+	background-image: linear-gradient(180deg,rgba(79,189,40,1.00) 0%,rgba(79,189,40,1.00) 100%);
+}
+.navbar-nav.mr-auto .nav-item .nav-link {
+	margin-left: 30px;
+	margin-right: 30px;
+	color: #FCFCFC;
+}
+.nav-item.dropdown .dropdown-menu .dropdown-item {
+	background-color: #4FBD28;
+	text-align: left;
+	color: #FCFCFC;
+}
+
+.container-fluid .container .navbar-header {
+	color: #FCFCFC;
 }
