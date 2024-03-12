@@ -5,8 +5,11 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, prod]
+  build-dev:    
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [ prod2, prod1 ] # Replace with your runner names
 
     steps:
       - name: Checkout Repository
