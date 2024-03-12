@@ -5,8 +5,11 @@ on:
       - dev
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, dev]
+  build-dev:    
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [ dev2, dev1 ]
 
     steps:
       - name: Checkout Repository
