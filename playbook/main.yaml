@@ -1,5 +1,5 @@
 - name: Build 
-  hosts: recursioncomic
+  hosts: jarvisfest
   vars_files:
     - vars.yaml
   tasks:                
@@ -9,18 +9,11 @@
         name: "{{ item }}"
       loop:
         - apache2
-        - mysql-client
         - php
-        - php-gd
-        - php-pdo
-        - php-mysql
-        - php-dom
         - php-curl
         - ncdu
         - gh
-        - composer
         - vim
-        - nfs-common
         - htop
         - keepalived
       become: true
@@ -53,23 +46,6 @@
         groups: www-data
         append: yes
       become: yes
-
-    - name: Set ownership of /var/www recursively
-      file:
-        path: /var/www
-        owner: kevin
-        group: www-data
-        recurse: yes
-        state: directory
-        force: yes  # Ensure the ownership is always changed
-      become: yes               
-
-    - name: Add NFS share entry to /etc/fstab
-      lineinfile:
-        path: /etc/fstab
-        line: "{{ nfs_server }}:{{ nfs_share }}    {{ nfs_target_dir }}    nfs    defaults    0 0"
-        insertafter: EOF
-      become: true
         
     - name: Copy keepalived script template
       copy:
@@ -203,18 +179,7 @@
         backrefs: yes        
         regexp: '^.*@@@SRC_IP.*$'
         line: "  unicast_src_ip {{ ansible_default_ipv4.address }}"  
-      become: yes
-
-    - name: Copy keepalived script template
-      copy:
-        src: "{{ git_dir }}/composer.json"
-        dest: "/var/www/"           
-
-    - name: install composer deps using composer.json
-      community.general.composer:
-        command: install
-        working_dir: /var/www
-      become_user: kevin:www-data
+      become: yes        
 
     - name: Update DocumentRoot in Apache configuration
       become: true
@@ -236,44 +201,6 @@
       become: true
       command: a2enmod rewrite
 
-    - name: Copy settings file
-      copy:
-        src: "{{ git_dir }}/settings.php"
-        dest: "/var/www/web/sites/default/"    
-
-    - name: Replace dbName placeholder with actual value in settings.php
-      become: true
-      replace:
-        path: /var/www/web/sites/default/settings.php
-        regexp: "@@@dbName"
-        replace: "{{ dbName }}"
-
-    - name: Replace username placeholder with actual value in settings.php
-      become: true
-      replace:
-        path: /var/www/web/sites/default/settings.php
-        regexp: "@@@username"
-        replace: "{{ username }}"
-
-    - name: Replace password placeholder with actual value in settings.php
-      become: true
-      replace:
-        path: /var/www/web/sites/default/settings.php
-        regexp: "@@@password"
-        replace: "{{ db_password }}"
-
-    - name: Replace dbHost placeholder with actual value in settings.php
-      become: true
-      replace:
-        path: /var/www/web/sites/default/settings.php
-        regexp: "@@@dbHost"
-        replace: "{{ DB_HOST }}"
-            
-    - name: Copy theme(s)
-      copy:
-        src: "{{ git_dir }}/themes/"
-        dest: "/var/www/web/themes/contrib/"    
-
     - name: Restart apache
       service:
         name: apache2
@@ -286,41 +213,8 @@
         state: restarted
       become: yes
 
-    - name: Create NFS mount point 
-      file:
-        path: /var/www/web/sites/default/files
-        state: directory
-      become: true
-
-    - name: Run sudo mount -a
-      become: true
-      command: mount -a
-
-    # - name: Run drush cache refresh
-    #   become: true
-    #   command: "{{ drush }} cr"
-    #   args:
-    #     chdir: "/var/www"
-    #   become_user: kevin:www-data
-
-    # - name: Run drush update db
-    #   become: true
-    #   command: "{{ drush }} updb"
-    #   args:
-    #     chdir: "/var/www"
-    #   become_user: kevin:www-data
-
-    - name: Change ownership recursively
-      become: true
-      file:
-        path: "{{ nfs_target_dir }}"
-        owner: "{{ ANSIBLE_USER }}"
-        group: "www-data"
-        recurse: yes
-
-    - name: Change permissions recursively
-      become: true
-      file:
-        path: "{{ nfs_target_dir }}"
-        mode: "0775"
-        recurse: yes
+    - name: copy all web files
+      copy:
+          src: "{{ git_dir }}/"
+          dest: "/var/www/html/"
+        become: true 
