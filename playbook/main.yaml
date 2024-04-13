@@ -20,7 +20,7 @@
 
     - name: Check if /var/www is a Git repository
       stat:
-        path: {{ CLONE_DEST }}.git
+        path: "{{ CLONE_DEST }}.git"
       register: git_directory
 
     - name: Empty web dir if it contains files and is not a Git repository
