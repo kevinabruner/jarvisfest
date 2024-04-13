@@ -46,14 +46,14 @@
       become: true
       when: git_directory.stat.exists == false    
 
-    - name: Pull from the repository if the directory exists and is not empty
+    - name: Pull from the repository if the directory exists
       git:
         repo: "{{ GIT_REPO }}"
         dest: "{{ git_dir }}"
         update: yes
         clone: yes
         accept_hostkey: yes
-      when: git_directory.stat.exists == false    
+      when: git_directory.stat.exists == true    
 
     - name: Enable apache2 service
       systemd:
