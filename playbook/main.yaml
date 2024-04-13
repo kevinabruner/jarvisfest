@@ -96,6 +96,11 @@
         append: yes
       become: yes
 
+    - name: Remove existing web directory
+      file:
+        path: /var/www
+        state: absent
+
     - name: Ensure the www-data user owns the web folder
       ansible.builtin.file:
         path: /var/www
@@ -104,17 +109,8 @@
         owner: kevin
         group: www-data
         mode: '0774'
-      become: true
-
-    - name: Check if /var/www is a Git repository
-      stat:
-        path: "{{ git_dir }}/.git"
-      register: git_directory
-
-    - name: Empty web dir 
-      command: "rm -rf /var/www/*" 
-      become: true     
-
+      become: true  
+     
     - name: Clone the repository 
       git:
         repo: "{{ GIT_REPO }}"
@@ -122,18 +118,7 @@
         clone: yes
         force: true        
         version: "{{ GIT_BRANCH }}"
-      become_user: kevin
-      when: git_directory.stat.exists == false          
-
-    - name: Pull from the repository if the directory exists
-      git:
-        repo: "{{ GIT_REPO }}"
-        dest: "{{ git_dir }}"
-        update: yes
-        clone: yes        
-        force: true        
-      become_user: kevin
-      when: git_directory.stat.exists == true    
+      become_user: kevin             
 
     - name: Enable apache2 service
       systemd:
