@@ -41,7 +41,8 @@
       git:
         repo: "{{ GIT_REPO }}"
         dest: "{{ git_dir }}"
-        clone: yes        
+        clone: yes
+        force: true        
       become: true
       when: git_directory.stat.exists == false    
 
