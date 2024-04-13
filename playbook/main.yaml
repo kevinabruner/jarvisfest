@@ -217,3 +217,4 @@
         recurse: yes
         owner: kevin
         group: www-data
+        mode: '0774
