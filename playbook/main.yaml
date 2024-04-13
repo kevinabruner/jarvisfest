@@ -20,23 +20,23 @@
 
     - name: Check if /var/www is a Git repository
       stat:
-        path: "{{ CLONE_DEST }}.git"
+        path: "{{ git_dir }}.git"
       register: git_directory
 
     - name: Empty web dir if it contains files and is not a Git repository
-      command: "rm -rf {{ CLONE_DEST }}*"
+      command: "rm -rf {{ git_dir }}*"
       when: git_directory.stat.exists == false    
 
 
     - name: Check if the directory exists and is empty
       stat:
-        path: "{{ CLONE_DEST }}"
+        path: "{{ git_dir }}"
       register: dir_stat
 
     - name: Clone the repository if the directory doesn't exist or is empty
       git:
         repo: "{{ GIT_REPO }}"
-        dest: "{{ CLONE_DEST }}"
+        dest: "{{ git_dir }}"
         clone: yes
         accept_hostkey: yes
       when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
@@ -45,7 +45,7 @@
     - name: Pull from the repository if the directory exists and is not empty
       git:
         repo: "{{ GIT_REPO }}"
-        dest: "{{ CLONE_DEST }}"
+        dest: "{{ git_dir }}"
         update: yes
         clone: yes
         accept_hostkey: yes
