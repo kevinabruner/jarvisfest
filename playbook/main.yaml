@@ -23,14 +23,16 @@
     - name: Setting internal/dev IP
       set_fact:
         VIRT_IP: "{{ internal_vip }}"  
-        ROUTER_ID: "{{ internal_router }}"               
+        ROUTER_ID: "{{ internal_router }}"  
+        GIT_BRANCH: "ansible"
       when:         
         - "'dev' in group_names"
     
     - name: Setting external/prod IP
       set_fact:
         VIRT_IP: "{{ external_vip }}"
-        ROUTER_ID: "{{ external_router }}"                
+        ROUTER_ID: "{{ external_router }}"     
+        GIT_BRANCH: "main"           
       when:         
         - "'prod' in group_names"      
                 
@@ -119,9 +121,9 @@
         dest: "{{ git_dir }}"
         clone: yes
         force: true        
-        version: "ansible"
+        version: "{{ GIT_BRANCH }}"
       become_user: kevin
-      when: git_directory.stat.exists == false    
+      when: git_directory.stat.exists == false          
 
     - name: Pull from the repository if the directory exists
       git:
