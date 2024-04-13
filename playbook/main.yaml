@@ -41,8 +41,7 @@
       git:
         repo: "{{ GIT_REPO }}"
         dest: "{{ git_dir }}"
-        clone: yes
-        accept_hostkey: yes
+        clone: yes        
       become: true
       when: git_directory.stat.exists == false    
 
@@ -51,8 +50,7 @@
         repo: "{{ GIT_REPO }}"
         dest: "{{ git_dir }}"
         update: yes
-        clone: yes
-        accept_hostkey: yes
+        clone: yes        
       when: git_directory.stat.exists == true    
 
     - name: Enable apache2 service
