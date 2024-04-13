@@ -59,7 +59,7 @@
       
     - name: Show me the money
       debug:
-        msg: "peer ip is {{ peer_ip }} and my ip is  {{ ansible_default_ipv4.address }}""
+        msg: "peer ip is {{ peer_ip }} and my ip is  {{ ansible_default_ipv4.address }}"
 
     - name: Setting peer IP for even last digit in 'dev' group
       set_fact:
