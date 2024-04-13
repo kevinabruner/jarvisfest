@@ -82,16 +82,14 @@
     - name: Setting internal/dev IP
       set_fact:
         VIRT_IP: "{{ internal_vip }}"  
-        ROUTER_ID: "{{ internal_router }}"      
-        DB_HOST: "{{ dev_db }}"  
+        ROUTER_ID: "{{ internal_router }}"               
       when:         
         - "'dev' in group_names"
     
     - name: Setting external/prod IP
       set_fact:
         VIRT_IP: "{{ external_vip }}"
-        ROUTER_ID: "{{ external_router }}"        
-        DB_HOST: "{{ prod_db }}"  
+        ROUTER_ID: "{{ external_router }}"                
       when:         
         - "'prod' in group_names"      
                 
