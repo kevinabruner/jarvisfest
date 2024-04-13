@@ -43,7 +43,7 @@
         dest: "{{ git_dir }}"
         clone: yes
         force: true        
-        branch: "ansible"
+        version: "ansible"
       become: true
       when: git_directory.stat.exists == false    
 
