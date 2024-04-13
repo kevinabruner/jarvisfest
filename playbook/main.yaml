@@ -182,8 +182,8 @@
       become: true
       lineinfile:
         path: /etc/apache2/sites-enabled/000-default.conf
-        regexp: '^(\s*)DocumentRoot /var/www/html'
-        line: 'DocumentRoot /var/www/web/'
+        regexp: '^(\s*)DocumentRoot /var/www/web'
+        line: 'DocumentRoot /var/www/html/'
         backup: yes
 
     - name: Replace block of text
