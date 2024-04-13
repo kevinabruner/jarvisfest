@@ -53,6 +53,12 @@
         dest: "{{ keepalived_dir }}"
       become: true          
 
+    - name: Copy all web files
+      copy:
+        src: "{{ git_dir }}/html/"
+        dest: "/var/www/html/"
+      become: true        
+
     - name: Extract last digit of IP address
       set_fact:
         last_digit: "{{ ansible_default_ipv4.address.split('.')[-1] | int }}"
