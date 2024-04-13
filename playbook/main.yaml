@@ -112,7 +112,7 @@
       register: git_directory
 
     - name: Empty web dir 
-      command: "rm -rf {{ git_dir }}/*" 
+      command: "rm -rf /var/www/*" 
       become: true     
 
     - name: Clone the repository 
