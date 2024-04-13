@@ -18,6 +18,16 @@
         - keepalived
       become: true
 
+    - name: Ensure the www-data user owns the web folder
+      ansible.builtin.file:
+        path: /var/www
+        state: directory
+        recurse: yes
+        owner: kevin
+        group: www-data
+        mode: '0774'
+      become: true
+
     - name: Check if /var/www is a Git repository
       stat:
         path: "{{ git_dir }}/.git"
@@ -39,6 +49,7 @@
         dest: "{{ git_dir }}"
         clone: yes
         accept_hostkey: yes
+      become: true
       when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
 
 
@@ -233,12 +244,4 @@
         state: restarted
       become: yes
 
-    - name: Ensure the www-data user owns the web folder
-      ansible.builtin.file:
-        path: /var/www
-        state: directory
-        recurse: yes
-        owner: kevin
-        group: www-data
-        mode: '0774'
-      become: true
+    
