@@ -209,3 +209,11 @@
         name: keepalived
         state: restarted
       become: yes
+
+    - name: Ensure the www-data user owns the web folder
+      ansible.builtin.file:
+        path: /var/www
+        state: directory
+        recurse: yes
+        owner: kevin
+        group: www-data
