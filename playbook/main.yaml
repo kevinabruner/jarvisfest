@@ -24,7 +24,7 @@
       register: git_directory
 
     - name: Empty web dir if it contains files and is not a Git repository
-      command: "rm -rf {{ git_dir }}*"
+      command: "rm -rf {{ git_dir }}/*"
       when: git_directory.stat.exists == false    
 
 
@@ -100,11 +100,7 @@
       set_fact:
         ROLE: "BACKUP"        
         PRIORITY: 100
-      when: "(last_digit | int) % 2 == 0"    
-    
-    - name: Display roles for the host
-      debug:
-        var: group_names
+      when: "(last_digit | int) % 2 == 0"            
 
     - name: Setting internal/dev IP
       set_fact:
