@@ -24,7 +24,7 @@
       set_fact:
         VIRT_IP: "{{ internal_vip }}"  
         ROUTER_ID: "{{ internal_router }}"  
-        GIT_BRANCH: "ansible"
+        GIT_BRANCH: "dev"
       when:         
         - "'dev' in group_names"
     
