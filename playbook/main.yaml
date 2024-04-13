@@ -20,14 +20,12 @@
 
     - name: Check if /var/www is a Git repository
       stat:
-        path: /var/www/.git
+        path: {{ CLONE_DEST }}.git
       register: git_directory
 
     - name: Empty web dir if it contains files and is not a Git repository
-      command: "rm -rf /var/www/*"
+      command: "rm -rf {{ CLONE_DEST }}*"
       when: git_directory.stat.exists == false    
-    
-    
 
 
     - name: Check if the directory exists and is empty

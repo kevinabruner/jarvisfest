@@ -4,6 +4,7 @@ pub_key_path: /home/{{ ANSIBLE_USER }}/.ssh/id_rsa.pub
 GIT_REPO: git@github.com:kevinabruner/pi.git
 KNOWN_HOSTS_PATH: /home/{{ ANSIBLE_USER }}/.ssh/known_hosts
 GIT_BRANCH: main
+CLONE_DEST: /var/www
 APPLICATION: jarvisfest
 netbox_dns: netbox.thejfk.ca
 certs_dir: "/opt/certs"
