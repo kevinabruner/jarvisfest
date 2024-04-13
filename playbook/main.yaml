@@ -26,51 +26,9 @@
     - name: Empty web dir if it contains files and is not a Git repository
       command: "rm -rf /var/www/*"
       when: git_directory.stat.exists == false    
+    
+    
 
-    - name: Check if SSH key is already present
-      stat:
-        path: "{{ pub_key_path }}"
-      register: key_stat_result
-
-    - name: Generate SSH key for accessing GitHub
-      command: "ssh-keygen -t rsa -f {{ priv_key_path }} -N ''"
-      when: not key_stat_result.stat.exists    
-
-    - name: Check if known_host exists
-      stat:
-        path: "{{ KNOWN_HOSTS_PATH }}"
-      register: known_hosts_stat
-
-    - name: Create known_hosts if it doesn't exist
-      file:
-        path: "{{ KNOWN_HOSTS_PATH }}"
-        state: touch
-      when: not known_hosts_stat.stat.exists
-
-    - name: Read SSH public key file
-      slurp:
-        src: "{{ pub_key_path }}"
-      register: pub_key_data
-
-
-    - name: Convert binary data to string
-      set_fact:
-        key_data: "{{ pub_key_data['content'] | b64decode | trim }}"
-
-    - name: Add SSH public key to GitHub account
-      uri:
-        url: https://api.github.com/user/keys
-        validate_certs: no
-        method: POST
-        body: 
-          title: "{{ inventory_hostname }}"
-          key: "{{ key_data }}"          
-        body_format: json
-        headers:
-          Content-Type: "application/json"
-          Authorization: "token {{ GITHUB_ACCESS_TOKEN }}"          
-      register: task_log
-      failed_when: task_log.status != 422 and task_log.status != 201
 
     - name: Check if the directory exists and is empty
       stat:
@@ -82,18 +40,18 @@
         repo: "{{ GIT_REPO }}"
         dest: "{{ CLONE_DEST }}"
         clone: yes
-      environment:
-        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+        accept_hostkey: yes
       when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
+
 
     - name: Pull from the repository if the directory exists and is not empty
       git:
         repo: "{{ GIT_REPO }}"
         dest: "{{ CLONE_DEST }}"
         update: yes
-      environment:
-        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
-      when: dir_stat.stat.exists == true and dir_stat.stat.isdir == true and dir_stat.stat.size > 0
+      clone: yes
+        accept_hostkey: yes
+      when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
 
     - name: Enable apache2 service
       systemd:
