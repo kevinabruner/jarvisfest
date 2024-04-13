@@ -49,7 +49,7 @@
         repo: "{{ GIT_REPO }}"
         dest: "{{ CLONE_DEST }}"
         update: yes
-      clone: yes
+        clone: yes
         accept_hostkey: yes
       when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
 
