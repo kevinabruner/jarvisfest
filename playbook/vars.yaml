@@ -4,7 +4,6 @@ priv_key_path: /home/{{ ANSIBLE_USER }}/.ssh/id_rsa
 pub_key_path: /home/{{ ANSIBLE_USER }}/.ssh/id_rsa.pub
 GIT_REPO: https://github.com/kevinabruner/{{ APPLICATION }}.git
 KNOWN_HOSTS_PATH: /home/{{ ANSIBLE_USER }}/.ssh/known_hosts
-GIT_BRANCH: main
 git_dir: /var/www
 netbox_dns: netbox.thejfk.ca
 certs_dir: "/opt/certs"
