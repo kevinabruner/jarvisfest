@@ -112,7 +112,8 @@
       register: git_directory
 
     - name: Empty web dir if it contains files and is not a Git repository
-      command: "rm -rf {{ git_dir }}/*"      
+      command: "rm -rf {{ git_dir }}/*" 
+      become: true     
 
     - name: Clone the repository 
       git:
