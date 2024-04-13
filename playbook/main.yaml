@@ -1,0 +1,225 @@
+- name: Build 
+  hosts: jarvisfest
+  vars_files:
+    - vars.yaml
+  tasks:                
+
+    - name: Extract last digit of IP address
+      set_fact:
+        last_digit: "{{ ansible_default_ipv4.address.split('.')[-1] | int }}"
+
+    - name: Master configuration
+      set_fact:
+        ROLE: "MASTER"
+        PRIORITY: 110
+      when: "(last_digit | int) % 2 != 0"    
+
+    - name: Backup configuration
+      set_fact:
+        ROLE: "BACKUP"        
+        PRIORITY: 100
+      when: "(last_digit | int) % 2 == 0"            
+
+    - name: Setting internal/dev IP
+      set_fact:
+        VIRT_IP: "{{ internal_vip }}"  
+        ROUTER_ID: "{{ internal_router }}"  
+        GIT_BRANCH: "dev"
+      when:         
+        - "'dev' in group_names"
+    
+    - name: Setting external/prod IP
+      set_fact:
+        VIRT_IP: "{{ external_vip }}"
+        ROUTER_ID: "{{ external_router }}"     
+        GIT_BRANCH: "main"           
+      when:         
+        - "'prod' in group_names"      
+                
+    - name: Setting peer IP for odd last digit in 'prod' group
+      set_fact:
+        peer_ip: "{{ prod1 }}"
+      when: 
+        - (last_digit | int) % 2 != 0
+        - "'prod' in group_names"
+
+    - name: Setting peer IP for even last digit in 'prod' group
+      set_fact:
+        peer_ip: "{{ prod2 }}"
+      when: 
+        - (last_digit | int) % 2 == 0
+        - "'prod' in group_names"
+
+    - name: Setting peer IP for odd last digit in 'dev' group
+      set_fact:
+        peer_ip: "{{ dev1 }}"
+      when: 
+        - (last_digit | int) % 2 != 0
+        - "'dev' in group_names"
+
+    - name: Setting peer IP for even last digit in 'dev' group
+      set_fact:
+        peer_ip: "{{ dev2 }}"
+      when: 
+        - (last_digit | int) % 2 == 0
+        - "'dev' in group_names"
+
+    - name: Install apt packages
+      apt:
+        update_cache: yes
+        name: "{{ item }}"
+      loop:
+        - apache2
+        - php
+        - php-curl
+        - ncdu
+        - gh
+        - vim
+        - htop
+        - keepalived
+      become: true
+
+    - name: Ensure user kevin exists
+      user:
+        name: kevin
+        state: present
+      become: yes
+
+    - name: Ensure group www-data exists
+      group:
+        name: www-data
+        state: present
+      become: yes
+
+    - name: Add user kevin to group www-data
+      user:
+        name: kevin
+        groups: www-data
+        append: yes
+      become: yes
+
+    - name: Remove existing web directory
+      file:
+        path: /var/www
+        state: absent
+      become: yes
+
+    - name: Ensure the www-data user owns the web folder
+      ansible.builtin.file:
+        path: /var/www
+        state: directory
+        recurse: yes
+        owner: kevin
+        group: www-data
+        mode: '0774'
+      become: true  
+     
+    - name: Clone the repository 
+      git:
+        repo: "{{ GIT_REPO }}"
+        dest: "{{ git_dir }}"
+        clone: yes
+        force: true        
+        version: "{{ GIT_BRANCH }}"
+      become_user: kevin             
+
+    - name: Enable apache2 service
+      systemd:
+        name: apache2
+        enabled: yes
+      become: true
+
+    - name: Enable keepalived service
+      systemd:
+        name: keepalived
+        enabled: yes
+      become: true
+            
+    - name: Copy keepalived script template
+      copy:
+        src: "/home/kevin/jarvisfest/{{ keepalived_conf }}"
+        dest: "{{ keepalived_dir }}"
+      become: true                 
+
+
+    - name: Replace "@@@MASTER_OR_SLAVE" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes        
+        regexp: '^.*@@@MASTER_OR_SLAVE.*$'
+        line: "  state {{ ROLE }}"  
+      become: yes
+
+    - name: Replace "@@@ROUTER_ID" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes        
+        regexp: '^.*@@@ROUTER_ID.*$'
+        line: "  virtual_router_id {{ ROUTER_ID }}"  
+      become: yes 
+
+    - name: Replace "@@@VIRT_IP" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes
+        regexp: '^.*@@@VIRT_IP.*$'
+        line: "    {{ VIRT_IP }}/24"
+      become: yes
+
+    - name: Replace "@@@PRIORITY" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes
+        regexp: '^.*@@@PRIORITY.*$'
+        line: "  priority {{ PRIORITY }}"
+      become: yes
+
+    - name: Replace @@@PEERS with unassigned IP
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        regexp: '^.*@@@PEERS.*$'
+        line: "    {{ peer_ip }}"
+        backrefs: yes
+      become: yes
+
+    - name: Replace "@@@INTERFACE" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes
+        regexp: '^.*@@@INTERFACE.*$'
+        line: "  interface {{ INTERFACE }}"
+      become: yes
+
+    - name: Replace "@@@SRC_IP" in file
+      lineinfile:
+        path: "{{ keepalived_dir }}/{{ keepalived_conf }}"
+        backrefs: yes        
+        regexp: '^.*@@@SRC_IP.*$'
+        line: "  unicast_src_ip {{ ansible_default_ipv4.address }}"  
+      become: yes        
+
+    - name: Replace block of text
+      ansible.builtin.replace:
+        path: /etc/apache2/apache2.conf
+        regexp: "(<Directory /var/www/>)\\n(\\s+Options Indexes FollowSymLinks\\n\\s+AllowOverride) None(\\n\\s+Require all granted\\n</Directory>)"
+        replace: "\\1\\n\\2 All\\3"
+        backup: yes
+      become: true
+
+    - name: Enable Apache rewrite module
+      become: true
+      command: a2enmod rewrite
+
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
+      become: yes    
+
+    - name: Restart keepalived
+      service:
+        name: keepalived
+        state: restarted
+      become: yes
+
+    
