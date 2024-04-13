@@ -196,9 +196,3 @@
         name: keepalived
         state: restarted
       become: yes
-
-    - name: copy all web files
-      copy:
-        src: "{{ git_dir }}/"
-        dest: "/var/www/html/"
-      become: true 
