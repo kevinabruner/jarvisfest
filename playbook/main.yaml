@@ -88,21 +88,7 @@
         DB_HOST: "{{ prod_db }}"  
       when:         
         - "'prod' in group_names"      
-
-    - name: Setting external/prod IP
-      set_fact:
-        VIRT_IP: "{{ external_vip }}"
-        ROUTER_ID: "{{ external_router }}"        
-        DB_HOST: "{{ prod_db }}"  
-      when:         
-        - "'prod' in group_names"                  
-
-    - name: Setting peer IP for odd last digit in 'prod' group
-      set_fact:
-        peer_ip: "{{ prod1 }}"
-      when: 
-        - (last_digit | int) % 2 != 0
-        - "'prod' in group_names"
+                
 
     - name: Setting peer IP for even last digit in 'prod' group
       set_fact:
@@ -118,12 +104,6 @@
         - (last_digit | int) % 2 != 0
         - "'dev' in group_names"
 
-    - name: Setting peer IP for even last digit in 'dev' group
-      set_fact:
-        peer_ip: "{{ dev2 }}"
-      when: 
-        - (last_digit | int) % 2 == 0
-        - "'dev' in group_names"
 
     - name: Replace "@@@MASTER_OR_SLAVE" in file
       lineinfile:
