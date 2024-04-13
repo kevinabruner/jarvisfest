@@ -37,21 +37,14 @@
       command: "rm -rf {{ git_dir }}/*"
       when: git_directory.stat.exists == false    
 
-
-    - name: Check if the directory exists and is empty
-      stat:
-        path: "{{ git_dir }}"
-      register: dir_stat
-
-    - name: Clone the repository if the directory doesn't exist or is empty
+    - name: Clone the repository 
       git:
         repo: "{{ GIT_REPO }}"
         dest: "{{ git_dir }}"
         clone: yes
         accept_hostkey: yes
       become: true
-      when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
-
+      when: git_directory.stat.exists == false    
 
     - name: Pull from the repository if the directory exists and is not empty
       git:
@@ -60,7 +53,7 @@
         update: yes
         clone: yes
         accept_hostkey: yes
-      when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
+      when: git_directory.stat.exists == false    
 
     - name: Enable apache2 service
       systemd:
