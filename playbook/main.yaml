@@ -111,7 +111,7 @@
         path: "{{ git_dir }}/.git"
       register: git_directory
 
-    - name: Empty web dir if it contains files and is not a Git repository
+    - name: Empty web dir 
       command: "rm -rf {{ git_dir }}/*" 
       become: true     
 
