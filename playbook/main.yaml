@@ -104,16 +104,10 @@
         owner: kevin
         group: www-data
         mode: '0774'
-      become: true
+      become: true    
 
-    - name: Check if /var/www is a Git repository
-      stat:
-        path: "{{ git_dir }}/.git"
-      register: git_directory
-
-    - name: Empty web dir if it contains files and is not a Git repository
-      command: "rm -rf {{ git_dir }}/*"
-      when: git_directory.stat.exists == false    
+    - name: Empty web dir 
+      command: "rm -rf {{ git_dir }}/*"       
 
     - name: Clone the repository 
       git:
