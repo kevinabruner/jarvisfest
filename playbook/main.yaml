@@ -53,8 +53,8 @@
         dest: "{{ keepalived_dir }}"
       become: true          
 
-    - name: Copy all web files
-      copy:
+    - name: Sync all web files
+      ansible.posix.synchronize:
         src: "{{ git_dir }}/html/"
         dest: "/var/www/html/"
       become: true        
