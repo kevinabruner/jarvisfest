@@ -52,6 +52,7 @@
         dest: "{{ git_dir }}"
         update: yes
         clone: yes        
+        force: true        
       when: git_directory.stat.exists == true    
 
     - name: Enable apache2 service
