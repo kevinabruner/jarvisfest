@@ -17,7 +17,84 @@
         - htop
         - keepalived
       become: true
-    
+
+    - name: Check if /var/www is a Git repository
+      stat:
+        path: /var/www/.git
+      register: git_directory
+
+    - name: Empty web dir if it contains files and is not a Git repository
+      command: "rm -rf /var/www/*"
+      when: git_directory.stat.exists == false    
+
+    - name: Check if SSH key is already present
+      stat:
+        path: "{{ pub_key_path }}"
+      register: key_stat_result
+
+    - name: Generate SSH key for accessing GitHub
+      command: "ssh-keygen -t rsa -f {{ priv_key_path }} -N ''"
+      when: not key_stat_result.stat.exists    
+
+    - name: Check if known_host exists
+      stat:
+        path: "{{ KNOWN_HOSTS_PATH }}"
+      register: known_hosts_stat
+
+    - name: Create known_hosts if it doesn't exist
+      file:
+        path: "{{ KNOWN_HOSTS_PATH }}"
+        state: touch
+      when: not known_hosts_stat.stat.exists
+
+    - name: Read SSH public key file
+      slurp:
+        src: "{{ pub_key_path }}"
+      register: pub_key_data
+
+
+    - name: Convert binary data to string
+      set_fact:
+        key_data: "{{ pub_key_data['content'] | b64decode | trim }}"
+
+    - name: Add SSH public key to GitHub account
+      uri:
+        url: https://api.github.com/user/keys
+        validate_certs: no
+        method: POST
+        body: 
+          title: "{{ inventory_hostname }}"
+          key: "{{ key_data }}"          
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+          Authorization: "token {{ GITHUB_ACCESS_TOKEN }}"          
+      register: task_log
+      failed_when: task_log.status != 422 and task_log.status != 201
+
+    - name: Check if the directory exists and is empty
+      stat:
+        path: "{{ CLONE_DEST }}"
+      register: dir_stat
+
+    - name: Clone the repository if the directory doesn't exist or is empty
+      git:
+        repo: "{{ GIT_REPO }}"
+        dest: "{{ CLONE_DEST }}"
+        clone: yes
+      environment:
+        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+      when: dir_stat.stat.exists == false or dir_stat.stat.isdir == false or dir_stat.stat.size == 0
+
+    - name: Pull from the repository if the directory exists and is not empty
+      git:
+        repo: "{{ GIT_REPO }}"
+        dest: "{{ CLONE_DEST }}"
+        update: yes
+      environment:
+        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+      when: dir_stat.stat.exists == true and dir_stat.stat.isdir == true and dir_stat.stat.size > 0
+
     - name: Enable apache2 service
       systemd:
         name: apache2
@@ -51,13 +128,7 @@
       copy:
         src: "{{ git_dir }}/{{ keepalived_conf }}"
         dest: "{{ keepalived_dir }}"
-      become: true          
-
-    - name: Sync all web files
-      ansible.posix.synchronize:
-        src: "{{ git_dir }}/html/"
-        dest: "/var/www/html/"
-      become: true        
+      become: true                 
 
     - name: Extract last digit of IP address
       set_fact:
@@ -182,8 +253,8 @@
       become: true
       lineinfile:
         path: /etc/apache2/sites-enabled/000-default.conf
-        regexp: '^(\s*)DocumentRoot /var/www/web'
-        line: 'DocumentRoot /var/www/html/'
+        regexp: '^(\s*)DocumentRoot /var/www/html'
+        line: 'DocumentRoot /var/www/web/'
         backup: yes
 
     - name: Replace block of text
