@@ -82,7 +82,7 @@
         
     - name: Copy keepalived script template
       copy:
-        src: "{{ git_dir }}/{{ keepalived_conf }}"
+        src: "/home/kevin/jarvisfest/{{ keepalived_conf }}"
         dest: "{{ keepalived_dir }}"
       become: true                 
 
