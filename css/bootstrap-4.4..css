@@ -5,6 +5,34 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 *,
@@ -21,18 +49,18 @@ html {
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
-	display: block;
-	text-align: center;
+  display: block;
 }
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
-	background-color: #fff;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -51,15 +79,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-	margin-top: 0;
-	margin-bottom: 1rem;
-	text-align: left;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;
   -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
   -webkit-text-decoration-skip-ink: none;
@@ -75,9 +104,8 @@ address {
 ol,
 ul,
 dl {
-	margin-top: 0;
-	margin-bottom: 1rem;
-	text-align: left;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 ol ol,
@@ -142,10 +170,8 @@ a:not([href]) {
 }
 
 a:not([href]):hover {
-	color: #030303;
-	text-decoration: none;
-	text-align: right;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  color: inherit;
+  text-decoration: none;
 }
 
 pre,
@@ -242,9 +268,7 @@ button:not(:disabled),
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled) {
-	cursor: pointer;
-	font-family: inherit;
-	font-size: xx-large;
+  cursor: pointer;
 }
 
 button::-moz-focus-inner,
@@ -340,25 +364,19 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1, .h1 {
-	font-size: 2.5rem;
-	color: #184705;
-	text-align: center;
+  font-size: 2.5rem;
 }
 
 h2, .h2 {
-	font-size: 2rem;
-	text-align: center;
+  font-size: 2rem;
 }
 
 h3, .h3 {
-	font-size: 1.75rem;
-	text-align: center;
+  font-size: 1.75rem;
 }
 
 h4, .h4 {
-	font-size: 1.5rem;
-	text-align: left;
-	color: #030303;
+  font-size: 1.5rem;
 }
 
 h5, .h5 {
@@ -456,9 +474,8 @@ mark,
 }
 
 .img-fluid {
-	max-width: 100%;
-	height: auto;
-	text-align: center;
+  max-width: 100%;
+  height: auto;
 }
 
 .img-thumbnail {
@@ -585,7 +602,7 @@ pre code {
 
 @media (min-width: 1200px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl {
-	max-width: 1140px;
+    max-width: 1140px;
   }
 }
 
@@ -2532,9 +2549,7 @@ textarea.form-control {
 }
 
 .btn.disabled, .btn:disabled {
-	opacity: 0.65;
-	text-align: right;
-	font-family: inherit;
+  opacity: 0.65;
 }
 
 a.btn.disabled,
@@ -4627,9 +4642,7 @@ input[type="button"].btn-block {
 }
 
 .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
-	color: rgba(252,252,252,1);
-	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
-	text-decoration: none;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .navbar-light .navbar-nav .nav-link.disabled {
@@ -4640,8 +4653,7 @@ input[type="button"].btn-block {
 .navbar-light .navbar-nav .active > .nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
-	color: rgba(252,252,252,1);
-	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .navbar-light .navbar-toggler {
@@ -4743,10 +4755,10 @@ input[type="button"].btn-block {
 }
 
 .card-body {
-	-ms-flex: 1 1 auto;
-	flex: 1 1 auto;
-	min-height: 1px;
-	padding: 1.25rem;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.25rem;
 }
 
 .card-title {
@@ -6850,8 +6862,7 @@ button.bg-dark:focus {
 }
 
 .rounded {
-	border-radius: 0.25rem !important;
-	text-align: right;
+  border-radius: 0.25rem !important;
 }
 
 .rounded-top {
@@ -9933,8 +9944,7 @@ button.bg-dark:focus {
 }
 
 .text-center {
-	text-align: center !important;
-	color: #030303;
+  text-align: center !important;
 }
 
 @media (min-width: 576px) {

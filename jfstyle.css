@@ -22,7 +22,7 @@
 }
 .container div {
 	font-size: x-large;
-	text-align: center;
+	text-align: right;
 }
 .map-responsive{
     overflow: hidden;
@@ -70,4 +70,8 @@
 .container-fluid .container .navbar-header {
 	color: #FCFCFC;
 	text-align: center;
+}
+.button a .btn.btn-lg {
+	border: thick double rgba(79,189,40,1.00);
+	text-align: right;
 }
