@@ -22,7 +22,7 @@
 }
 .container div {
 	font-size: x-large;
-	text-align: right;
+	text-align: center;
 }
 .map-responsive{
     overflow: hidden;
@@ -74,4 +74,11 @@
 .button a .btn.btn-lg {
 	border: thick double rgba(79,189,40,1.00);
 	text-align: right;
+}
+.container .gallery img {
+	width: 230px;
+	padding-left: 5px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
 }
